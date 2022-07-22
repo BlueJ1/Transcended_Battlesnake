@@ -69,7 +69,7 @@ if __name__ == "__main__":
     logging.getLogger("werkzeug").setLevel(logging.ERROR)
 
     host = "0.0.0.0"
-    port = int(os.environ.get("PORT", "8080"))
+    port = int(os.environ.get("PORT", "8088"))
 
     print(f"\nRunning Battlesnake server at http://{host}:{port}")
     app.env = 'development'
