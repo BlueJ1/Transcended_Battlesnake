@@ -41,6 +41,8 @@ def handle_move():
     """
     data = request.get_json()
 
+    board = data['board']
+    print(f'w: {board["width"]}, h: {board["height"]}')
     # TODO - look at the logic.py file to see how we decide what move to return!
     move = logic.choose_move(data)
 

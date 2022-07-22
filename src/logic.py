@@ -115,6 +115,7 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     """
 
     head = body[0]
+    print(f'head_x: {head["x"]}, head_y: {head["y"]}')
     if (head['x'] + 1) == board_width:
         possible_moves.remove("right")
     if (head['x'] - 1) < 0:
