@@ -120,7 +120,7 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
         possible_moves.remove("left")
     elif (head['y'] + 1) == board_width:
         possible_moves.remove("up")
-    elif (head['x'] - 1) < 0:
+    elif (head['y'] - 1) < 0:
         possible_moves.remove("down")
 
     return possible_moves
