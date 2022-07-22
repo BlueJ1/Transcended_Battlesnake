@@ -8,6 +8,8 @@ def log(move: str, data: dict = None, log_file: str = None):
     if log_file is None:
         log_file = "move_log.csv"
 
+    log_file = "../logs/" + log_file
+
     if os.path.isfile(log_file):
         os.mkdir(log_file)
 
