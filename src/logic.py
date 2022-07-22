@@ -112,18 +112,22 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     possible_moves: List of strings. Moves to pick from.
             e.g. ["up", "down", "left", "right"]
 
-    return: The list of remaining possible_moves, with directions which would lead the snake into a boarder removed
+    return: The list of remaining possible_moves, with directions which would lead the snake into a border removed
     """
+
+    if len(possible_moves) <= 1:
+        return possible_moves
 
     head = body[0]
     print(f'head_x: {head["x"]}, head_y: {head["y"]}')
-    if (head['x'] + 1) == board_width:
+
+    if "right" in possible_moves and (head['x'] + 1) == board_width:
         possible_moves.remove("right")
-    if (head['x'] - 1) < 0:
+    if "left" in possible_moves and (head['x'] - 1) < 0:
         possible_moves.remove("left")
-    if (head['y'] + 1) == board_width:
+    if "up" in possible_moves and (head['y'] + 1) == board_width:
         possible_moves.remove("up")
-    if (head['y'] - 1) < 0:
+    if "down" in possible_moves and (head['y'] - 1) < 0:
         possible_moves.remove("down")
 
     return possible_moves
@@ -139,18 +143,21 @@ def _avoid_body(body: dict, possible_moves: List[str], board_height: int, board_
     return: The list of remaining possible_moves, with directions which would lead the snake into a boarder removed
     """
 
+    if len(possible_moves) <= 1:
+        return possible_moves
+
     head = body[0]
     hx, hy = head.values()
 
     for body_part in body[1:]:
         x, y = body_part.values()
-        if hx + 1 == x and hy == y:
+        if "right" in possible_moves and hx + 1 == x and hy == y:
             possible_moves.remove("right")
-        if hx - 1 == x and hy == y:
+        if "left" in possible_moves and hx - 1 == x and hy == y:
             possible_moves.remove("left")
-        if hx == x and hy + 1 == y:
+        if "up" in possible_moves and hx == x and hy + 1 == y:
             possible_moves.remove("up")
-        if hx == x and hy - 1 == y:
+        if "down" in possible_moves and hx == x and hy - 1 == y:
             possible_moves.remove("down")
 
     return possible_moves
