@@ -8,6 +8,7 @@ We have started this for you, and included some logic to remove your Battlesnake
 from the list of possible moves!
 """
 
+
 def get_info() -> dict:
     """
     This controls your Battlesnake appearance and author permissions.
@@ -17,10 +18,10 @@ def get_info() -> dict:
     """
     return {
         "apiversion": "1",
-        "author": "",  # TODO: Your Battlesnake Username
-        "color": "#888888",  # TODO: Personalize
-        "head": "default",  # TODO: Personalize
-        "tail": "default",  # TODO: Personalize
+        "author": "BlueJ1",
+        "color": "#783f04",
+        "head": "sand-worm",  # TODO: Personalize
+        "tail": "round-bum",  # TODO: Personalize
     }
 
 
