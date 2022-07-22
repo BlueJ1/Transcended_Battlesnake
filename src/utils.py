@@ -1,4 +1,5 @@
 import os
+from typing import List
 
 import pandas as pd
 
@@ -15,7 +16,7 @@ def log(move: str, data: dict = None, log_file: str = None):
     move_history.to_csv(log_file)
 
 
-def read_logs(log_file: str = None):
+def read_logs(log_file: str = None) -> List[str]:
     if log_file is None:
         log_file = "move_log.csv"
 
