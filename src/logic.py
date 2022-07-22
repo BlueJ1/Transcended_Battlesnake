@@ -114,6 +114,7 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     return: The list of remaining possible_moves, with directions which would lead the snake into a boarder removed
     """
     head = body[0]
+    print(f'head_x: {head["x"]}, head_y: {head["y"]}')
     if (head['x'] + 1) == board_width:
         possible_moves.remove("right")
     elif (head['x'] - 1) < 0:
