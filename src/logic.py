@@ -60,6 +60,7 @@ def choose_move(data: dict) -> str:
     board = data['board']
     board_height, board_width = board['height'], board['width']
     possible_moves = _avoid_wall(my_body, possible_moves, board_height=board_height, board_width=board_width)
+    possible_moves = _avoid_body(my_body, possible_moves, board_height=board_height, board_width=board_width)
 
     # TODO: Step 2 - Don't hit yourself.
     # Use information from `my_body` to avoid moves that would collide with yourself.
