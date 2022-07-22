@@ -112,7 +112,8 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     possible_moves: List of strings. Moves to pick from.
             e.g. ["up", "down", "left", "right"]
 
-    return: The list of remaining possible_moves, with directions which would lead the snake into a border removed
+    return: The list of remaining possible_moves, with directions
+            which would lead the snake outside the boundaries removed.
     """
 
     if len(possible_moves) <= 1:
@@ -133,14 +134,15 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     return possible_moves
 
 
-def _avoid_body(body: dict, possible_moves: List[str], board_height: int, board_width: int) -> List[str]:
+def _avoid_body(body: dict, possible_moves: List[str]) -> List[str]:
     """
     my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
     possible_moves: List of strings. Moves to pick from.
             e.g. ["up", "down", "left", "right"]
 
-    return: The list of remaining possible_moves, with directions which would lead the snake into a boarder removed
+    return: The list of remaining possible_moves,
+            with directions which would lead the snake into it's own body removed.
     """
 
     if len(possible_moves) <= 1:
