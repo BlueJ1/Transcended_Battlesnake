@@ -1,5 +1,6 @@
 import random
 from typing import List, Dict
+from utils import *
 
 """
 This file can be a nice home for your Battlesnake's logic and helper functions.
@@ -16,12 +17,13 @@ def get_info() -> dict:
 
     TIP: If you open your Battlesnake URL in browser you should see this data.
     """
+
     return {
         "apiversion": "1",
         "author": "BlueJ1",
-        "color": "#783f04",
-        "head": "sand-worm",  # TODO: Personalize
-        "tail": "round-bum",  # TODO: Personalize
+        "color": "#783F04",
+        "head": "sand-worm",
+        "tail": "round-bum",
     }
 
 
