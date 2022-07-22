@@ -55,9 +55,9 @@ def choose_move(data: dict) -> str:
 
     # TODO: Step 1 - Don't hit walls.
     # Use information from `data` and `my_head` to not move beyond the game board.
-    # board = data['board']
-    # board_height = ?
-    # board_width = ?
+    board = data['board']
+    board_height, board_width = board['height'], board['width']
+    possible_moves = _avoid_wall(my_body, possible_moves, board_height=board_height, board_width=board_width)
 
     # TODO: Step 2 - Don't hit yourself.
     # Use information from `my_body` to avoid moves that would collide with yourself.
@@ -100,3 +100,23 @@ def _avoid_my_neck(my_body: dict, possible_moves: List[str]) -> List[str]:
         possible_moves.remove("up")
 
     return possible_moves
+
+
+def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_width: int) -> List[str]:
+    """
+    my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
+            e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    possible_moves: List of strings. Moves to pick from.
+            e.g. ["up", "down", "left", "right"]
+
+    return: The list of remaining possible_moves, with directions which would lead the snake into a boarder removed
+    """
+    head = body[0]
+    if (head['x'] + 1) == board_width:
+        possible_moves.remove("right")
+    elif (head['x'] - 1) < 0:
+        possible_moves.remove("left")
+    elif (head['y'] + 1) == board_width:
+        possible_moves.remove("up")
+    elif (head['x'] - 1) < 0:
+        possible_moves.remove("down")
