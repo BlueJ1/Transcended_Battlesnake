@@ -1,5 +1,6 @@
 import random
 from typing import List, Dict
+from utils import *
 
 """
 This file can be a nice home for your Battlesnake's logic and helper functions.
@@ -16,12 +17,13 @@ def get_info() -> dict:
 
     TIP: If you open your Battlesnake URL in browser you should see this data.
     """
+
     return {
         "apiversion": "1",
         "author": "BlueJ1",
-        "color": "#783f04",
-        "head": "sand-worm",  # TODO: Personalize
-        "tail": "round-bum",  # TODO: Personalize
+        "color": "#783F04",
+        "head": "sand-worm",
+        "tail": "round-bum",
     }
 
 
@@ -55,9 +57,9 @@ def choose_move(data: dict) -> str:
 
     # TODO: Step 1 - Don't hit walls.
     # Use information from `data` and `my_head` to not move beyond the game board.
-    # board = data['board']
-    # board_height = ?
-    # board_width = ?
+    board = data['board']
+    board_height = board.height
+    board_width = board.width
 
     # TODO: Step 2 - Don't hit yourself.
     # Use information from `my_body` to avoid moves that would collide with yourself.
