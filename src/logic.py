@@ -47,8 +47,7 @@ def choose_move(data: dict) -> str:
 
     board = data['board']
     board_height, board_width = board['height'], board['width']
-    for snake in board["snakes"]:
-        print(snake)
+    other_snakes = board["snakes"]
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
@@ -72,6 +71,7 @@ def choose_move(data: dict) -> str:
 
     # TODO: Step 3 - Don't collide with others.
     # Use information from `data` to prevent your Battlesnake from colliding with others.
+    possible_moves = _avoid_other_snakes(my_head, other_snakes, possible_moves)
 
     # TODO: Step 4 - Find food.
     # Use information in `data` to seek out and find food.
@@ -174,7 +174,10 @@ def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: Li
     """
     head: Dictionary with x/y coordinates of the Battlesnake's head.
             e.g. {"x": 0, "y": 0}
-    other_snakes: List of dictionaries of x/y coordinates for every segment of the other Battlesnakes in the game.
+    other_snakes: List of dictionaries with information about the other Battlesnakes in the game.
+            Keywords for every item: 'id', 'name', 'latency', 'health', 'body', 'head', 'length', 'shout', 'squad' and
+            'customizations'
+            Each item contains a list of dictionaries with x/y coordinates of the corresponding body (key 'body'):
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
     possible_moves: List of strings. Moves to pick from.
             e.g. ["up", "down", "left", "right"]
@@ -188,15 +191,16 @@ def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: Li
 
     hx, hy = head.values()
 
-    for other_snake_part in other_snakes:
-        x, y = other_snake_part.values()
-        if "right" in possible_moves and hx + 1 == x and hy == y:
-            possible_moves.remove("right")
-        if "left" in possible_moves and hx - 1 == x and hy == y:
-            possible_moves.remove("left")
-        if "up" in possible_moves and hx == x and hy + 1 == y:
-            possible_moves.remove("up")
-        if "down" in possible_moves and hx == x and hy - 1 == y:
-            possible_moves.remove("down")
+    for snake in other_snakes:
+        for snake_part in snake["body"]:
+            x, y = snake_part.values()
+            if "right" in possible_moves and hx + 1 == x and hy == y:
+                possible_moves.remove("right")
+            if "left" in possible_moves and hx - 1 == x and hy == y:
+                possible_moves.remove("left")
+            if "up" in possible_moves and hx == x and hy + 1 == y:
+                possible_moves.remove("up")
+            if "down" in possible_moves and hx == x and hy - 1 == y:
+                possible_moves.remove("down")
 
     return possible_moves
