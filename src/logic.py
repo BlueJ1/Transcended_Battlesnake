@@ -61,24 +61,24 @@ def choose_move(data: dict) -> str:
     # Step 0: Don't allow your Battlesnake to move back on it's own neck.
     possible_moves = _avoid_my_neck(my_body, possible_moves)
 
-    # TODO: Step 1 - Don't hit walls.
+    # Step 1 - Don't hit walls.
     # Use information from `data` and `my_head` to not move beyond the game board.
     possible_moves = _avoid_wall(my_body, possible_moves, board_height=board_height, board_width=board_width)
 
-    # TODO: Step 2 - Don't hit yourself.
+    # Step 2 - Don't hit yourself.
     possible_moves = _avoid_body(my_body, possible_moves)
     # Use information from `my_body` to avoid moves that would collide with yourself.
 
-    # TODO: Step 3 - Don't collide with others.
+    # Step 3 - Don't collide with others.
     # Use information from `data` to prevent your Battlesnake from colliding with others.
     possible_moves = _avoid_other_snakes(my_head, other_snakes, possible_moves)
 
-    # TODO: Step 4 - Find food.
+    # Step 4 - Find food.
     # Use information in `data` to seek out and find food.
     food = data['board']['food']
     if len(food) > 0:
         closest_food = find_closest(my_head, food)
-        move = _move_towards(my_head, closest_food, possible_moves)
+        move = _move_towards(my_head, closest_food, board_height, board_width, possible_moves)
     else:
         move = _pseudo_random(my_head, board_height, board_width, possible_moves)
 
@@ -119,6 +119,8 @@ def _avoid_wall(body: List[dict], possible_moves: List[str], board_height: int, 
     """
     my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    board_height: Int indicating height of the game board.
+    board_width: Int indicating width of the game board.
     possible_moves: List of strings. Moves to pick from.
             e.g. ["up", "down", "left", "right"]
 
@@ -211,7 +213,21 @@ def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: Li
     return possible_moves
 
 
-def _move_towards(head: dict, goal: dict, possible_moves: List[str]) -> str:
+def _move_towards(head: dict, goal: dict, board_height: int, board_width: int, possible_moves: List[str]) -> str:
+    """
+    head: Dictionary with x/y coordinates of the Battlesnake's head.
+            e.g. {"x": 0, "y": 0}
+    goal: Dictionary with x/y coordinates of the goal point.
+            e.g. {"x": 0, "y": 0}
+    board_height: Int indicating height of the game board.
+    board_width: Int indicating width of the game board.
+    possible_moves: List of strings. Moves to pick from.
+            e.g. ["up", "down", "left", "right"]
+
+    return: str;
+            A chosen move, bringing the snake towards the goal point, prioritizing the axis with higher distance.
+            If no move leads towards the goal, chooses a (pseudo) random one.
+    """
 
     hx, hy = head["x"], head["y"]
     gx, gy = goal["x"], goal["y"]
@@ -226,18 +242,32 @@ def _move_towards(head: dict, goal: dict, possible_moves: List[str]) -> str:
     elif dx < dy and hy > gy and "down" in possible_moves:
         return "down"
     else:  # reached automatically if head == goal
-        return random.choice(possible_moves)
+        return _pseudo_random(head, board_height, board_width, possible_moves)
 
 
-def _pseudo_random(head: dict, height: int, width: int, possible_moves: List[str]) -> str:
+def _pseudo_random(head: dict, board_height: int, board_width: int, possible_moves: List[str]) -> str:
+    """
+    head: Dictionary with x/y coordinates of the Battlesnake's head.
+            e.g. {"x": 0, "y": 0}
+    board_height: Int indicating height of the game board.
+    board_width: Int indicating width of the game board.
+    possible_moves: List of strings. Moves to pick from.
+            e.g. ["up", "down", "left", "right"]
+
+    return: str;
+            A chosen move that, if possible, brings the snake away from a wall, and otherwise is a random selection
+            from possible_moves.
+    """
+
     hx, hy = head["x"], head["y"]
+
     if hx == 0 and "right" in possible_moves:
         return "right"
-    elif hx + 1 == width and "left" in possible_moves:
+    elif hx + 1 == board_width and "left" in possible_moves:
         return "left"
     elif hy == 0 and "up" in possible_moves:
         return "up"
-    elif hy + 1 == height and "down" in possible_moves:
+    elif hy + 1 == board_height and "down" in possible_moves:
         return "down"
     else:
         return random.choice(possible_moves)

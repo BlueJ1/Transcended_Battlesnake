@@ -29,6 +29,17 @@ def read_logs(log_file: str = None) -> List[str]:
 
 
 def find_closest(p: dict, qs: List[dict], metric: str = "Manhattan"):
+    """
+    p: Dictionary with x/y coordinates of a point p
+            e.g. {"x": 0, "y": 0}
+    qs: List of dictionaries with x/y coordinates of points, of which one has to be chosen as closest to p
+            e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    metric: Str indicating the method by which closeness is determined
+            e.g. "Manhattan"
+
+    return: The dictionary with x/y coordinates of a point in qs that is closest to p by the specified metric
+    """
+
     if len(qs) == 1:
         return qs[0]
     elif len(qs) == 0:
