@@ -32,7 +32,7 @@ def find_closest(p: dict, qs: List[dict], metric: str = "Manhattan"):
     if len(qs) == 1:
         return qs[0]
     elif len(qs) == 0:
-        raise ValueError("Empty list of points, so a closest one cannot be found.")
+        return p
 
     if metric == "Manhattan":
         px, py = p["x"], p["y"]
