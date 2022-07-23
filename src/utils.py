@@ -28,7 +28,7 @@ def read_logs(log_file: str = None) -> List[str]:
     return move_history
 
 
-def find_closest(p: Dict[str: int], qs: List[Dict[str: int]], metric: str = "Manhattan"):
+def find_closest(p: dict, qs: List[dict], metric: str = "Manhattan"):
     if len(qs) <= 1:
         return qs
 
