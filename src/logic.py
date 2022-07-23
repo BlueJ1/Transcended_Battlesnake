@@ -48,7 +48,7 @@ def choose_move(data: dict) -> str:
     board = data['board']
     board_height, board_width = board['height'], board['width']
     other_snakes = board["snakes"]
-    print(board)
+    hazards = board["hazards"]
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
@@ -73,6 +73,9 @@ def choose_move(data: dict) -> str:
     # Step 3 - Don't collide with others.
     # Use information from `data` to prevent your Battlesnake from colliding with others.
     possible_moves = _avoid_other_snakes(my_head, other_snakes, possible_moves)
+
+    # Step 4 – Don't hit obstacles.
+    possible_moves = _avoid_hazards(my_head, hazards, possible_moves)
 
     # Step 4 - Find food.
     # Use information in `data` to seek out and find food.
@@ -210,6 +213,38 @@ def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: Li
                 possible_moves.remove("up")
             if "down" in possible_moves and hx == x and hy - 1 == y:
                 possible_moves.remove("down")
+
+    return possible_moves
+
+
+def _avoid_hazards(head: dict, hazards: List[dict], possible_moves: List[str]) -> List[str]:
+    """
+    head: Dictionary with x/y coordinates of the Battlesnake's head.
+            e.g. {"x": 0, "y": 0}
+    hazards: List of dictionaries with information about the location of hazards in the game.
+            e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    possible_moves: List of strings. Moves to pick from.
+            e.g. ["up", "down", "left", "right"]
+
+    return: The list of remaining possible_moves,
+            with directions which would lead the snake into another snake.
+    """
+
+    if len(possible_moves) <= 1:
+        return possible_moves
+
+    hx, hy = head.values()
+
+    for hazard in hazards:
+        x, y = hazard.values()
+        if "right" in possible_moves and hx + 1 == x and hy == y:
+            possible_moves.remove("right")
+        if "left" in possible_moves and hx - 1 == x and hy == y:
+            possible_moves.remove("left")
+        if "up" in possible_moves and hx == x and hy + 1 == y:
+            possible_moves.remove("up")
+        if "down" in possible_moves and hx == x and hy - 1 == y:
+            possible_moves.remove("down")
 
     return possible_moves
 
