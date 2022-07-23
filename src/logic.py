@@ -227,7 +227,7 @@ def _avoid_hazards(head: dict, hazards: List[dict], possible_moves: List[str]) -
             e.g. ["up", "down", "left", "right"]
 
     return: The list of remaining possible_moves,
-            with directions which would lead the snake into another snake.
+            with directions which would lead the snake into a hazard.
     """
 
     if len(possible_moves) <= 1:
