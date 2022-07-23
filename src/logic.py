@@ -76,8 +76,11 @@ def choose_move(data: dict) -> str:
     # TODO: Step 4 - Find food.
     # Use information in `data` to seek out and find food.
     food = data['board']['food']
-    closest_food = find_closest(my_head, food)
-    move = _move_towards(my_head, closest_food, possible_moves)
+    if len(food) > 0:
+        closest_food = find_closest(my_head, food)
+        move = _move_towards(my_head, closest_food, possible_moves)
+    else:
+        move = _pseudo_random(my_head, board_height, board_width, possible_moves)
 
     # Choose a random direction from the remaining possible_moves to move in, and then return that move
     # move = random.choice(possible_moves)
@@ -223,4 +226,18 @@ def _move_towards(head: dict, goal: dict, possible_moves: List[str]) -> str:
     elif dx < dy and hy > gy and "down" in possible_moves:
         return "down"
     else:  # reached automatically if head == goal
+        return random.choice(possible_moves)
+
+
+def _pseudo_random(head: dict, height: int, width: int, possible_moves: List[str]) -> str:
+    hx, hy = head["x"], head["y"]
+    if hx == 0 and "right" in possible_moves:
+        return "right"
+    elif hx + 1 == width and "left" in possible_moves:
+        return "left"
+    elif hy == 0 and "up" in possible_moves:
+        return "up"
+    elif hy + 1 == height and "down" in possible_moves:
+        return "down"
+    else:
         return random.choice(possible_moves)
