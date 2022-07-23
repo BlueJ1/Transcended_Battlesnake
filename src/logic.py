@@ -40,10 +40,6 @@ def choose_move(data: dict) -> str:
 
     """
 
-    if "snakes" in data:
-        for snake in data["snakes"]:
-            print(snake)
-
     my_snake = data["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
     # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
@@ -51,6 +47,8 @@ def choose_move(data: dict) -> str:
 
     board = data['board']
     board_height, board_width = board['height'], board['width']
+    for snake in board["snakes"]:
+        print(snake)
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
