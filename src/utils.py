@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Dict
 
 import pandas as pd
 
@@ -26,3 +26,22 @@ def read_logs(log_file: str = None) -> List[str]:
     move_history = move_history.values.tolist()
 
     return move_history
+
+
+def find_closest(p: Dict[str: int], qs: List[Dict[str: int]], metric: str = "Manhattan"):
+    if len(qs) <= 1:
+        return qs
+
+    if metric == "Manhattan":
+        px, py = p["x"], p["y"]
+        best_distance = abs(px - qs[0]["x"]) + abs(py - qs[0]["y"])
+        best_q = qs[0]
+        for q in qs[1:]:
+            distance = abs(px - q["x"]) + abs(py - q["y"])
+            if distance < best_distance:
+                best_distance = distance
+                best_q = q
+    else:
+        raise ValueError(f'Distance metric {metric} not implemented.')
+
+    return best_q

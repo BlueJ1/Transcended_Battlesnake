@@ -75,10 +75,12 @@ def choose_move(data: dict) -> str:
 
     # TODO: Step 4 - Find food.
     # Use information in `data` to seek out and find food.
-    # food = data['board']['food']
+    food = data['board']['food']
+    closest_food = find_closest(my_head, food)
+    move = _move_towards(my_head, closest_food, possible_moves)
 
     # Choose a random direction from the remaining possible_moves to move in, and then return that move
-    move = random.choice(possible_moves)
+    # move = random.choice(possible_moves)
     # TODO: Explore new strategies for picking a move that are better than random
 
     print(f"{data['game']['id']} MOVE {data['turn']}: {move} picked from all valid options in {possible_moves}")
@@ -204,3 +206,21 @@ def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: Li
                 possible_moves.remove("down")
 
     return possible_moves
+
+
+def _move_towards(head: dict, goal: dict, possible_moves: List[str]) -> str:
+
+    hx, hy = head["x"], head["y"]
+    gx, gy = goal["x"], goal["y"]
+    dx, dy = abs(hx - gx), abs(hy - gy)
+
+    if dx >= dy and hx < gx and "right" in possible_moves:
+        return "right"
+    elif dx >= dy and hx > gx and "left" in possible_moves:
+        return "left"
+    elif dx < dy and hy < gy and "up" in possible_moves:
+        return "up"
+    elif dx < dy and hy > gy and "down" in possible_moves:
+        return "down"
+    else:  # reached automatically if head == goal
+        return random.choice(possible_moves)
