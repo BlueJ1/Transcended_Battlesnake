@@ -48,6 +48,7 @@ def choose_move(data: dict) -> str:
     board = data['board']
     board_height, board_width = board['height'], board['width']
     other_snakes = board["snakes"]
+    print(board)
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
