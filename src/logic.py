@@ -76,6 +76,7 @@ def choose_move(data: dict) -> str:
     # TODO: Step 4 - Find food.
     # Use information in `data` to seek out and find food.
     food = data['board']['food']
+    print(food)
     closest_food = find_closest(my_head, food)
     move = _move_towards(my_head, closest_food, possible_moves)
 
