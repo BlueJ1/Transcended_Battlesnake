@@ -39,9 +39,15 @@ def choose_move(data: dict) -> str:
     for each move of the game.
 
     """
+    print(data)
+
     my_snake = data["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
-    my_body = my_snake["body"]  # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    my_body = my_snake["body"]
+
+    board = data['board']
+    board_height, board_width = board['height'], board['width']
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
@@ -57,12 +63,10 @@ def choose_move(data: dict) -> str:
 
     # TODO: Step 1 - Don't hit walls.
     # Use information from `data` and `my_head` to not move beyond the game board.
-    board = data['board']
-    board_height, board_width = board['height'], board['width']
     possible_moves = _avoid_wall(my_body, possible_moves, board_height=board_height, board_width=board_width)
-    possible_moves = _avoid_body(my_body, possible_moves, board_height=board_height, board_width=board_width)
 
     # TODO: Step 2 - Don't hit yourself.
+    possible_moves = _avoid_body(my_body, possible_moves)
     # Use information from `my_body` to avoid moves that would collide with yourself.
 
     # TODO: Step 3 - Don't collide with others.
@@ -81,7 +85,7 @@ def choose_move(data: dict) -> str:
     return move
 
 
-def _avoid_my_neck(my_body: dict, possible_moves: List[str]) -> List[str]:
+def _avoid_my_neck(my_body: List[dict], possible_moves: List[str]) -> List[str]:
     """
     my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
@@ -105,7 +109,7 @@ def _avoid_my_neck(my_body: dict, possible_moves: List[str]) -> List[str]:
     return possible_moves
 
 
-def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_width: int) -> List[str]:
+def _avoid_wall(body: List[dict], possible_moves: List[str], board_height: int, board_width: int) -> List[str]:
     """
     my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
@@ -126,7 +130,7 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
         possible_moves.remove("right")
     if "left" in possible_moves and (head['x'] - 1) < 0:
         possible_moves.remove("left")
-    if "up" in possible_moves and (head['y'] + 1) == board_width:
+    if "up" in possible_moves and (head['y'] + 1) == board_height:
         possible_moves.remove("up")
     if "down" in possible_moves and (head['y'] - 1) < 0:
         possible_moves.remove("down")
@@ -134,7 +138,7 @@ def _avoid_wall(body: dict, possible_moves: List[str], board_height: int, board_
     return possible_moves
 
 
-def _avoid_body(body: dict, possible_moves: List[str]) -> List[str]:
+def _avoid_body(body: List[dict], possible_moves: List[str]) -> List[str]:
     """
     my_body: List of dictionaries of x/y coordinates for every segment of a Battlesnake.
             e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
@@ -142,7 +146,7 @@ def _avoid_body(body: dict, possible_moves: List[str]) -> List[str]:
             e.g. ["up", "down", "left", "right"]
 
     return: The list of remaining possible_moves,
-            with directions which would lead the snake into it's own body removed.
+            with directions which would lead the snake into its own body removed.
     """
 
     if len(possible_moves) <= 1:
@@ -153,6 +157,38 @@ def _avoid_body(body: dict, possible_moves: List[str]) -> List[str]:
 
     for body_part in body[1:]:
         x, y = body_part.values()
+        if "right" in possible_moves and hx + 1 == x and hy == y:
+            possible_moves.remove("right")
+        if "left" in possible_moves and hx - 1 == x and hy == y:
+            possible_moves.remove("left")
+        if "up" in possible_moves and hx == x and hy + 1 == y:
+            possible_moves.remove("up")
+        if "down" in possible_moves and hx == x and hy - 1 == y:
+            possible_moves.remove("down")
+
+    return possible_moves
+
+
+def _avoid_other_snakes(head: dict, other_snakes: List[dict], possible_moves: List[str]) -> List[str]:
+    """
+    head: Dictionary with x/y coordinates of the Battlesnake's head.
+            e.g. {"x": 0, "y": 0}
+    other_snakes: List of dictionaries of x/y coordinates for every segment of the other Battlesnakes in the game.
+            e.g. [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
+    possible_moves: List of strings. Moves to pick from.
+            e.g. ["up", "down", "left", "right"]
+
+    return: The list of remaining possible_moves,
+            with directions which would lead the snake into another snake.
+    """
+
+    if len(possible_moves) <= 1:
+        return possible_moves
+
+    hx, hy = head.values()
+
+    for other_snake_part in other_snakes:
+        x, y = other_snake_part.values()
         if "right" in possible_moves and hx + 1 == x and hy == y:
             possible_moves.remove("right")
         if "left" in possible_moves and hx - 1 == x and hy == y:
