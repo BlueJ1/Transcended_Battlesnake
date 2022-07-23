@@ -39,7 +39,9 @@ def choose_move(data: dict) -> str:
     for each move of the game.
 
     """
-    print(data)
+
+    for snake in data["snakes"]:
+        print(snake)
 
     my_snake = data["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
