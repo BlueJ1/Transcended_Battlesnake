@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Tuple
 
 from avoid import avoid_obstacles
 
@@ -27,5 +27,5 @@ def dls_survival(my_body: List[dict], board: dict, d: int, l: int):
     return 0
 
 
-def simulate_turn(body: List[dict], board: dict):
+def simulate_turn(body: List[dict], board: dict, move: str) -> List[Tuple[List[dict], dict]]:
     pass
