@@ -40,8 +40,6 @@ def choose_move(data: dict) -> str:
 
     """
 
-    raise ValueError('Test Error')
-
     my_snake = data["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
     # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
