@@ -48,19 +48,7 @@ def dls_survival(state: dict, d: int, l: int):
 
 
 def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
-    print("########################################")
-    print("Deep copy test:")
-    print(state)
-    print("########################################")
-
-    new_state = deep_copy(state)
-
-    print(new_state)
-    print("########################################")
-    print(state == new_state)
-
-    state = new_state
-
+    state = deep_copy(state)
     state = simulate_move(my_move, my_id, state)
 
     other_snakes = [snake if snake["id"] != state["you"]["id"] else None for snake in state["board"]["snakes"]]
@@ -130,6 +118,7 @@ def simulate_move(move: str, snake_id: str, state: dict) -> dict:
         state["board"]["food"].remove(new_head)
 
     if snake["health"] == 0:
+        print("Ran out of health!!!!!!!!!!!!!!!!!!!")
         state["board"]["snakes"].remove(snake)
 
     if snake_id == state["you"]["id"]:
