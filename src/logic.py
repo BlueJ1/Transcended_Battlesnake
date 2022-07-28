@@ -28,9 +28,10 @@ def get_info() -> dict:
     }
 
 
-def choose_move(data: dict) -> str:
+def choose_move(state: dict) -> str:
     """
-    data: Dictionary of all Game Board data as received from the Battlesnake Engine.
+    state: Dictionary of all Game Board data as received from the Battlesnake Engine, describing the current state of
+            the game.
     For a full example of 'data', see https://docs.battlesnake.com/references/api/sample-move-request
 
     return: A String, the single move to make. One of "up", "down", "left" or "right".
@@ -41,12 +42,12 @@ def choose_move(data: dict) -> str:
 
     """
 
-    my_snake = data["you"]      # A dictionary describing your snake's position on the board
+    my_snake = state["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
     # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
     my_body = my_snake["body"]
 
-    board = data['board']
+    board = state['board']
     board_height, board_width = board['height'], board['width']
     other_snakes = board["snakes"]
     hazards = board["hazards"]
@@ -70,7 +71,7 @@ def choose_move(data: dict) -> str:
     else:
         # Step 4 - Find food.
         # Use information in `data` to seek out and find food.
-        food = data['board']['food']
+        food = board['food']
         if len(food) > 0:
             closest_food = find_closest(my_head, food)
             move = _move_towards(my_head, closest_food, board_height, board_width, possible_moves)
@@ -81,7 +82,7 @@ def choose_move(data: dict) -> str:
         # move = random.choice(possible_moves)
         # TODO: Explore new strategies for picking a move that are better than random
 
-    print(f"{data['game']['id']} MOVE {data['turn']}: {move} picked from all valid options in {possible_moves}")
+    print(f"{state['game']['id']} MOVE {state['turn']}: {move} picked from all valid options in {possible_moves}")
 
     return move
 

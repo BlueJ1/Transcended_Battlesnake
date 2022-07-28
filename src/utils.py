@@ -58,3 +58,20 @@ def find_closest(p: dict, qs: List[dict], metric: str = "Manhattan"):
         raise ValueError(f'Distance metric {metric} not implemented.')
 
     return best_q
+
+
+def deep_copy(obj):
+    if type(obj) == list:
+        new_obj = []
+        for item in obj:
+            new_obj.append(deep_copy(item))
+    elif type(obj) == dict:
+        new_obj = {}
+        for key, val in obj.items():
+            new_obj[key] = deep_copy(val)  # assuming only strings as keys
+    elif type(obj) == str or type(obj) == int:
+        new_obj = obj
+    else:
+        raise ValueError(f'Cannot copy object {obj}')
+
+    return new_obj
