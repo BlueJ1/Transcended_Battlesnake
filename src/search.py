@@ -5,7 +5,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy
 
 
-def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 3) -> List[str]:
+def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 1) -> List[str]:
     my_id = state["you"]["id"]
     for move in possible_moves:
         move_possible = False
@@ -25,13 +25,13 @@ def dls_survival(state: dict, d: int, l: int):
     Simple recursive depth-limited search for sequences of moves that ensure survival.
     """
 
+    if d == l:
+        return 1  # success if we reach the depth limit
+
     my_head = state["you"]["head"]
     my_id = state["you"]["id"]
     board = state["board"]
     # TODO consider more relevant data (e.g. health)
-
-    if d == l:
-        return 1  # success if we reach the depth limit
 
     possible_moves = ["up", "down", "left", "right"]
     possible_moves = avoid_obstacles(my_head, board, possible_moves)
