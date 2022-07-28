@@ -94,6 +94,7 @@ def simulate_move(move: str, snake_id: str, state: dict) -> dict:
     for any_snake in state["board"]["snakes"]:
         if any_snake["id"] == snake_id:
             snake = snake
+            print("Found snake!")
             break
 
     if snake is None:
