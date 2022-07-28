@@ -21,6 +21,7 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
                 break
 
         if not move_possible:
+            print("Removed " + move + " in remove_certain_deaths.")
             possible_moves.remove(move)
 
     print("time:", time() - t)
