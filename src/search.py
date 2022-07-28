@@ -7,7 +7,7 @@ from utils import deep_copy, head_body_distance
 
 direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 CONSIDERED_DISTANCE = 12
-DEPTH_LIMIT = 10
+DEPTH_LIMIT = 15
 
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH_LIMIT) -> List[str]:
@@ -67,8 +67,6 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
                                for snake in considered_snakes]
 
     possible_outcomes = []
-
-    print(f'Number of searched states = {len(list(itertools.product(*moves_considered_snakes)))}')
 
     for moves in itertools.product(*moves_considered_snakes):
         new_state = deep_copy(state)
