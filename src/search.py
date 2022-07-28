@@ -90,14 +90,13 @@ def alive(snakes, snake_id):
 
 
 def simulate_move(move: str, snake_id: str, state: dict) -> dict:
-    snake = {}
+    snake = None
     for any_snake in state["board"]["snakes"]:
         if any_snake["id"] == snake_id:
             snake = snake
             break
 
-    if "id" not in snake:
-        print(state)
+    if snake is None:
         raise ValueError(f'No snake with id == {snake_id}.')
 
     head = snake["head"]
