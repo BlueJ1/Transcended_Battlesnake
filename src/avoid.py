@@ -24,7 +24,7 @@ def avoid_obstacles(my_head: dict, state: dict, possible_moves: List[str]) -> Li
     """
 
     board = state["board"]
-    ruleset = state["ruleset"]["name"]
+    ruleset = state["game"]["ruleset"]["name"]
 
     if not ruleset == "wrapped":
         possible_moves = _avoid_wall(my_head, board["height"], board["width"], possible_moves)
