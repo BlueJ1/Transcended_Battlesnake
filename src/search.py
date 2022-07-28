@@ -10,10 +10,10 @@ direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 1) -> List[str]:
     t = time()
-    my_id = state["you"]["id"]
+    my_snake = state["you"]
     for move in possible_moves:
         move_possible = False
-        for new_state in simulate_turn(move, my_id, state):
+        for new_state in simulate_turn(move, my_snake, state):
             if dls_survival(new_state, 1, l):
                 move_possible = True
                 break
@@ -35,7 +35,7 @@ def dls_survival(state: dict, d: int, l: int):
         return 1  # success if we reach the depth limit
 
     my_head = state["you"]["head"]
-    my_id = state["you"]["id"]
+    my_snake = state["you"]
     board = state["board"]
     # TODO consider more relevant data (e.g. health)
 
@@ -46,16 +46,16 @@ def dls_survival(state: dict, d: int, l: int):
         return 0
 
     for move in possible_moves:
-        for new_state in simulate_turn(move, my_id, state):
+        for new_state in simulate_turn(move, my_snake, state):
             if dls_survival(new_state, d + 1, l):
                 return 1
 
     return 0
 
 
-def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
+def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
     state = deep_copy(state)
-    state = simulate_move(my_move, my_id, state)
+    state = simulate_move(my_move, my_snake, state)
 
     other_snakes = [snake if snake["id"] != state["you"]["id"] else None for snake in state["board"]["snakes"]]
     other_snakes.remove(None)
