@@ -40,7 +40,7 @@ def dls_survival(state: dict, d: int, l: int):
     # TODO consider more relevant data (e.g. health)
 
     possible_moves = ["up", "down", "left", "right"]
-    possible_moves = avoid_obstacles(my_head, board, possible_moves)
+    # possible_moves = avoid_obstacles(my_head, board, possible_moves)
 
     if len(possible_moves) == 0:
         return 0
