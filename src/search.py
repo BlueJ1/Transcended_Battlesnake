@@ -53,10 +53,13 @@ def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
     print(state)
     print("########################################")
 
-    state = deep_copy(state)
+    new_state = deep_copy(state)
 
-    print(state)
+    print(new_state)
     print("########################################")
+    print(state == new_state)
+
+    state = new_state
 
     state = simulate_move(my_move, my_id, state)
 
