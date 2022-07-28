@@ -48,6 +48,18 @@ def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
         for move, snake_id in moves:
             new_state = simulate_move(move, snake_id, state)
 
+        # check head collisions
+        for snake in new_state["board"]["snakes"]:
+            for other_snake in new_state["board"]["snakes"]:
+                if snake["id"] != other_snake["id"] and snake["head"] == other_snake["head"]:
+                    if snake["health"] < other_snake["health"]:
+                        new_state["board"]["snakes"].remove(snake)
+                    elif snake["health"] > other_snake["health"]:
+                        new_state["board"]["snakes"].remove(other_snake)
+                    else:
+                        new_state["board"]["snakes"].remove(snake)
+                        new_state["board"]["snakes"].remove(other_snake)
+
         if alive(new_state["board"]["snakes"], new_state["you"]["id"]):
             possible_outcomes.append(new_state)
 
@@ -63,4 +75,33 @@ def alive(snakes, snake_id):
 
 
 def simulate_move(move: str, snake_id: str, state: dict) -> dict:
-    pass
+    snake = {}
+    for any_snake in state["board"]["snakes"]:
+        if any_snake["id"] == snake_id:
+            snake = snake
+            break
+
+    if "id" not in snake:
+        raise ValueError(f'No snake with id == {snake_id}.')
+
+    head = snake["head"]
+    direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
+    new_head = {"x": head["x"] + direction_dxdy[move][0], "y": head["y"] + direction_dxdy[move][1]}
+    new_body = [new_head] + snake["body"][:-1]
+
+    snake["head"] = new_head
+    snake["body"] = new_body
+    snake["health"] -= 1
+
+    if new_head in state["board"]["food"]:
+        snake["health"] = 100
+        state["board"]["food"].remove(new_head)
+
+    if snake["health"] == 0:
+        state["board"]["snakes"].remove(snake)
+
+    if snake_id == state["you"]["id"]:
+        state["you"] = snake
+        state["turn"] += 1
+
+    return state
