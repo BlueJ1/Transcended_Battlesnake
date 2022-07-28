@@ -61,6 +61,10 @@ def find_closest(p: dict, qs: List[dict], metric: str = "Manhattan"):
 
 
 def deep_copy(obj):
+    print("########################################")
+    print("Deep copy test:")
+    print(obj)
+    print("########################################")
     if type(obj) == list:
         new_obj = []
         for item in obj:
@@ -73,5 +77,8 @@ def deep_copy(obj):
         new_obj = obj
     else:
         raise ValueError(f'Cannot copy object {obj}')
+
+    print(new_obj)
+    print("########################################")
 
     return new_obj
