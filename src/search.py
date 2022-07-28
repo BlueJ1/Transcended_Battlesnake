@@ -3,7 +3,7 @@ import itertools
 from time import time
 
 from avoid import avoid_obstacles
-from utils import deep_copy
+from utils import deep_copy, head_distance
 
 direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 
@@ -34,9 +34,7 @@ def dls_survival(state: dict, d: int, l: int):
     if d >= l:
         return 1  # success if we reach the depth limit
 
-    my_head = state["you"]["head"]
     my_snake = state["you"]
-    board = state["board"]
     # TODO consider more relevant data (e.g. health)
 
     possible_moves = ["up", "down", "left", "right"]
@@ -57,7 +55,8 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
     state = deep_copy(state)
     state = simulate_move(my_move, my_snake, state)
 
-    other_snakes = [snake if snake["id"] != state["you"]["id"] else None for snake in state["board"]["snakes"]]
+    other_snakes = [snake if snake["id"] != state["you"]["id"] and head_distance(my_snake, snake) < 10 else None for
+                    snake in state["board"]["snakes"]]
     other_snakes.remove(None)
     moves_other_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state["board"],
                                                                      ["up", "down", "left", "right"])]

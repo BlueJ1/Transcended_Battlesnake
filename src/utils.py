@@ -75,3 +75,7 @@ def deep_copy(obj):
         raise ValueError(f'Cannot copy object {obj}')
 
     return new_obj
+
+
+def head_distance(snake1: dict, snake2: dict) -> int:
+    return abs(snake1["head"]["x"] - snake2["head"]["x"]) + abs(snake1["head"]["y"] - snake2["head"]["y"])
