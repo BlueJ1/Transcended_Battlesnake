@@ -97,6 +97,7 @@ def simulate_move(move: str, snake_id: str, state: dict) -> dict:
             break
 
     if "id" not in snake:
+        print(state)
         raise ValueError(f'No snake with id == {snake_id}.')
 
     head = snake["head"]
