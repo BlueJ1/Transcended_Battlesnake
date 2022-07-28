@@ -5,6 +5,21 @@ from avoid import avoid_obstacles
 from utils import deep_copy
 
 
+def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 3) -> List[str]:
+    my_id = state["you"]["id"]
+    for move in possible_moves:
+        move_possible = False
+        for new_state in simulate_turn(move, my_id, state):
+            if dls_survival(new_state, 1, l):
+                move_possible = True
+                break
+
+        if not move_possible:
+            possible_moves.remove(move)
+
+    return possible_moves
+
+
 def dls_survival(state: dict, d: int, l: int):
     """
     Simple recursive depth-limited search for sequences of moves that ensure survival.

@@ -2,6 +2,7 @@ import random
 from typing import List
 from utils import find_closest
 from avoid import avoid_obstacles
+from search import remove_certain_deaths
 
 """
 This file can be a nice home for your Battlesnake's logic and helper functions.
@@ -61,7 +62,9 @@ def choose_move(state: dict) -> str:
 
     possible_moves = ["up", "down", "left", "right"]
     # Step 0 to 3 – eliminate impossible moves
-    possible_moves = avoid_obstacles(my_body, other_snakes, hazards, board_height, board_width, possible_moves)
+    # TODO: merge the next two lines
+    possible_moves = avoid_obstacles(my_head, board, possible_moves)
+    possible_moves = remove_certain_deaths(state, possible_moves)
 
     if len(possible_moves) == 0:
         move = "up"  # the move returned here is irrelevant, as none is correct
