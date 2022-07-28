@@ -69,7 +69,7 @@ def deep_copy(obj):
         new_obj = {}
         for key, val in obj.items():
             new_obj[key] = deep_copy(val)  # assuming only strings as keys
-    elif type(obj) == str or type(obj) == int:
+    elif type(obj) in [str, int, bool]:
         new_obj = obj
     else:
         raise ValueError(f'Cannot copy object {obj}')
