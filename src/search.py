@@ -117,10 +117,10 @@ def simulate_move(move: str, snake_id: str, state: dict) -> dict:
         snake["health"] = 100
         state["board"]["food"].remove(new_head)
 
+    """
     if snake["health"] == 0:
-        print("Ran out of health!!!!!!!!!!!!!!!!!!!")
-        print(state["board"]["snakes"])
         state["board"]["snakes"].remove(snake)
+    """
 
     if snake_id == state["you"]["id"]:
         state["you"] = snake
