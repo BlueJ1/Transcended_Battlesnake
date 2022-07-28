@@ -20,7 +20,7 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
                 move_possible = False
                 break
 
-        if not move_possible:
+        if True:
             print("Removed " + move + " in remove_certain_deaths.")
             possible_moves.remove(move)
 
