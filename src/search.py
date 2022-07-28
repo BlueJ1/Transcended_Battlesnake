@@ -62,6 +62,9 @@ def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
                           for snake in other_snakes]
 
     possible_outcomes = []
+
+    print(f'Number of searched states = {len(list(itertools.product(*moves_other_snakes)))}')
+
     for moves in itertools.product(*moves_other_snakes):
         new_state = deep_copy(state)
         for move, snake_id in moves:
