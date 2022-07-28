@@ -14,10 +14,10 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
     t = time()
     my_snake = state["you"]
     for move in possible_moves:
-        move_possible = False
+        move_possible = True
         for new_state in simulate_turn(move, my_snake, state):
-            if dls_survival(new_state, 1, l):
-                move_possible = True
+            if not dls_survival(new_state, 1, l):
+                move_possible = False
                 break
 
         if not move_possible:
