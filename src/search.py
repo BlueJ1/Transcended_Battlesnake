@@ -55,18 +55,20 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
     state = deep_copy(state)
     state = simulate_move(my_move, my_snake, state)
 
-    other_snakes = [snake if snake["id"] != state["you"]["id"] and head_distance(my_snake, snake) < 10 else None for
-                    snake in state["board"]["snakes"]]
-    other_snakes.remove(None)
-    moves_other_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state["board"],
-                                                                     ["up", "down", "left", "right"])]
-                          for snake in other_snakes]
+    considered_snakes = []
+    for snake in state["board"]["snakes"]:
+        if snake["id"] != state["you"]["id"] and head_distance(my_snake, snake) < 10:
+            considered_snakes.append(snake)
+
+    moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state["board"],
+                                                                          ["up", "down", "left", "right"])]
+                               for snake in considered_snakes]
 
     possible_outcomes = []
 
-    print(f'Number of searched states = {len(list(itertools.product(*moves_other_snakes)))}')
+    print(f'Number of searched states = {len(list(itertools.product(*moves_considered_snakes)))}')
 
-    for moves in itertools.product(*moves_other_snakes):
+    for moves in itertools.product(*moves_considered_snakes):
         new_state = deep_copy(state)
         for move, snake in moves:
             new_state = simulate_move(move, snake, state)
