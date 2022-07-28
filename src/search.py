@@ -48,10 +48,10 @@ def dls_survival(state: dict, d: int, l: int):
 
     for move in possible_moves:
         for new_state in simulate_turn(move, my_snake, state):
-            if dls_survival(new_state, d + 1, l):
-                return 1
+            if not dls_survival(new_state, d + 1, l):
+                return 0
 
-    return 0
+    return 1
 
 
 def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
