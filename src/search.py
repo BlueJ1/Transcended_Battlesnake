@@ -111,7 +111,6 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
     snake["body"] = [new_head] + snake["body"][:-1]
 
     snake["head"] = new_head
-    """
     snake["health"] -= 1
 
     if new_head in state["board"]["food"]:
@@ -124,6 +123,5 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
     if snake["id"] == state["you"]["id"]:
         state["you"] = snake
         state["turn"] += 1
-    """
 
     return state
