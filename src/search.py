@@ -8,7 +8,7 @@ from utils import deep_copy, head_distance
 direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 
 
-def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 1) -> List[str]:
+def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 2) -> List[str]:
     t = time()
     my_snake = state["you"]
     for move in possible_moves:
