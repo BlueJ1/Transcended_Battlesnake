@@ -48,7 +48,16 @@ def dls_survival(state: dict, d: int, l: int):
 
 
 def simulate_turn(my_move: str, my_id, state: dict) -> List[dict]:
+    print("########################################")
+    print("Deep copy test:")
+    print(state)
+    print("########################################")
+
     state = deep_copy(state)
+
+    print(state)
+    print("########################################")
+
     state = simulate_move(my_move, my_id, state)
 
     other_snakes = [snake if snake["id"] != state["you"]["id"] else None for snake in state["board"]["snakes"]]
