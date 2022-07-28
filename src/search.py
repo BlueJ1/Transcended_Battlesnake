@@ -1,13 +1,13 @@
 from typing import List
 import itertools
+from time import time
 
 from avoid import avoid_obstacles
 from utils import deep_copy
 
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 1) -> List[str]:
-    return possible_moves
-
+    t = time()
     my_id = state["you"]["id"]
     for move in possible_moves:
         move_possible = False
@@ -18,6 +18,8 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 1) ->
 
         if not move_possible:
             possible_moves.remove(move)
+
+    print("time:", time() - t)
 
     return possible_moves
 
