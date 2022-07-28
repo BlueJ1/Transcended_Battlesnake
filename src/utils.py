@@ -82,5 +82,5 @@ def head_distance(snake1: dict, snake2: dict) -> int:
 
 
 def head_body_distance(snake1: dict, snake2: dict) -> int:
-    return min([abs(snake1["head"]["x"] - body_part["x"]) + abs(snake1["head"]["y"] - body_part["head"]["y"])
+    return min([abs(snake1["head"]["x"] - body_part["x"]) + abs(snake1["head"]["y"] - body_part["y"])
                 for body_part in snake2["body"]])
