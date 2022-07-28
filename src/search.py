@@ -92,6 +92,9 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
         if alive(new_state["board"]["snakes"], new_state["you"]["id"]):
             possible_outcomes.append(new_state)
 
+    if len(possible_outcomes) == 0:
+        possible_outcomes = [state]
+
     return possible_outcomes
 
 

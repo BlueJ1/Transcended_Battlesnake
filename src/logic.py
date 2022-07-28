@@ -79,7 +79,8 @@ def choose_move(state: dict) -> str:
             closest_food = find_closest(my_head, food)
             move = _move_towards(my_head, closest_food, board_height, board_width, possible_moves)
         else:
-            move = _pseudo_random(my_head, board_height, board_width, possible_moves)
+            # move = _pseudo_random(my_head, board_height, board_width, possible_moves)
+            move = random.choice(possible_moves)
 
         # Choose a random direction from the remaining possible_moves to move in, and then return that move
         # move = random.choice(possible_moves)
