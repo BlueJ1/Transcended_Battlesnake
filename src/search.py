@@ -3,7 +3,7 @@ import itertools
 from time import time
 
 from avoid import avoid_obstacles
-from utils import deep_copy, head_distance, head_body_distance
+from utils import deep_copy, head_body_distance
 
 direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 
@@ -60,7 +60,7 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
         if snake["id"] != state["you"]["id"] and head_body_distance(my_snake, snake) < 8:
             considered_snakes.append(snake)
 
-    moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state["board"],
+    moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state,
                                                                           ["up", "down", "left", "right"])]
                                for snake in considered_snakes]
 

@@ -63,7 +63,7 @@ def choose_move(state: dict) -> str:
     possible_moves = ["up", "down", "left", "right"]
     # Step 0 to 3 – eliminate impossible moves
     # TODO: merge the next two lines
-    possible_moves = avoid_obstacles(my_head, board, possible_moves)
+    possible_moves = avoid_obstacles(my_head, state, possible_moves)
     possible_moves = remove_certain_deaths(state, possible_moves)
 
     if len(possible_moves) == 0:

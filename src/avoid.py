@@ -1,7 +1,7 @@
 from typing import List
 
 
-def avoid_obstacles(my_head: dict, board: dict, possible_moves: List[str]) -> List[str]:
+def avoid_obstacles(my_head: dict, state: dict, possible_moves: List[str]) -> List[str]:
     """
     Universal function to eliminate all moves that are against the rules, bundling more specific functions.
 
@@ -23,7 +23,11 @@ def avoid_obstacles(my_head: dict, board: dict, possible_moves: List[str]) -> Li
             This list CAN BE EMPTY.
     """
 
-    possible_moves = _avoid_wall(my_head, board["height"], board["width"], possible_moves)
+    board = state["board"]
+    ruleset = state["ruleset"]["name"]
+
+    if not ruleset == "wrapped":
+        possible_moves = _avoid_wall(my_head, board["height"], board["width"], possible_moves)
     possible_moves = _avoid_snake_bodies(my_head, board["snakes"], possible_moves)
     possible_moves = _avoid_hazards(my_head, board["hazards"], possible_moves)
 
