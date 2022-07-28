@@ -3,12 +3,12 @@ import itertools
 from time import time
 
 from avoid import avoid_obstacles
-from utils import deep_copy, head_distance
+from utils import deep_copy, head_distance, head_body_distance
 
 direction_dxdy = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 
 
-def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 2) -> List[str]:
+def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = 3) -> List[str]:
     t = time()
     my_snake = state["you"]
     for move in possible_moves:
@@ -57,7 +57,7 @@ def simulate_turn(my_move: str, my_snake, state: dict) -> List[dict]:
 
     considered_snakes = []
     for snake in state["board"]["snakes"]:
-        if snake["id"] != state["you"]["id"] and head_distance(my_snake, snake) < 10:
+        if snake["id"] != state["you"]["id"] and head_body_distance(my_snake, snake) < 8:
             considered_snakes.append(snake)
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state["board"],

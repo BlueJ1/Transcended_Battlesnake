@@ -79,3 +79,8 @@ def deep_copy(obj):
 
 def head_distance(snake1: dict, snake2: dict) -> int:
     return abs(snake1["head"]["x"] - snake2["head"]["x"]) + abs(snake1["head"]["y"] - snake2["head"]["y"])
+
+
+def head_body_distance(snake1: dict, snake2: dict) -> int:
+    return min([abs(snake1["head"]["x"] - body_part["x"]) + abs(snake1["head"]["y"] - body_part["head"]["y"])
+                for body_part in snake2["body"]])
