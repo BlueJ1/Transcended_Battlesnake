@@ -80,7 +80,7 @@ def _avoid_snake_bodies(my_head: dict, snakes: List[dict], possible_moves: List[
     hx, hy = my_head.values()
 
     for snake in snakes:
-        for snake_part in snake["body"]:
+        for snake_part in snake["body"][:-1]:  # the bum doesn't need to be regarded
             x, y = snake_part.values()
             if "right" in possible_moves and hx + 1 == x and hy == y:
                 possible_moves.remove("right")

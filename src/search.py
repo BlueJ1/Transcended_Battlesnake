@@ -39,6 +39,7 @@ def dls_survival(state: dict, d: int, l: int):
 
     possible_moves = ["up", "down", "left", "right"]
     possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
+    print(possible_moves)
 
     if len(possible_moves) == 0:
         print("Found deadly branch1")
