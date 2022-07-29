@@ -12,10 +12,10 @@ CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH_LIMIT) -> List[str]:
     t = time()
-    my_snake = state["you"]
+    my_id = state["you"]["id"]
     for move in possible_moves:
         move_possible = True
-        for new_state in simulate_turn(move, my_snake, state):
+        for new_state in simulate_turn(move, my_id, state):
             if not dls_survival(new_state, 1, l):
                 move_possible = False
                 break
