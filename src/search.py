@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-DEPTH_LIMIT = 25
+DEPTH_LIMIT = 22
 CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
 
 
@@ -39,27 +39,27 @@ def dls_survival(state: dict, d: int, l: int):
 
     possible_moves = ["up", "down", "left", "right"]
     possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
-    print(possible_moves)
+    # print(possible_moves)
 
     if len(possible_moves) == 0:
-        print("Found deadly branch1")
+        # print("Found deadly branch1")
         return 0
     elif d >= l:
         return 1  # success if we reach the depth limit and still have moves left
 
     for move in possible_moves:
         move_ensures_survival = True
-        print(f'd={d}, move={move}')
+        # print(f'd={d}, move={move}')
         for new_state in simulate_turn(move, my_id, state):
             if not dls_survival(new_state, d + 1, l):
-                print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
+                # print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
                 move_ensures_survival = False
                 break
         if move_ensures_survival:
-            print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
+            # print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
             return 1
 
-    print("Found deadly branch2")
+    # print("Found deadly branch2")
     return 0
 
 
