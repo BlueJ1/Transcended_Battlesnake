@@ -80,9 +80,9 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     possible_outcomes = []
 
     for moves in itertools.product(*moves_considered_snakes):
-        new_state = deep_copy(new_state)
+        new_state2 = deep_copy(new_state)
         for move, snake in moves:
-            new_state = simulate_move(move, snake, new_state)
+            new_state2 = simulate_move(move, snake, new_state2)
 
         """
         # check head collisions
@@ -98,8 +98,8 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
                         new_state["board"]["snakes"].remove(other_snake)
         """
 
-        if alive(new_state["board"]["snakes"], new_state["you"]["id"]):
-            possible_outcomes.append(new_state)
+        if alive(new_state2["board"]["snakes"], new_state2["you"]["id"]):
+            possible_outcomes.append(new_state2)
 
     if len(possible_outcomes) == 0:
         possible_outcomes = [new_state]
@@ -123,9 +123,9 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
     snake["head"] = new_head
     snake["health"] -= 1
 
-    if new_head in state["board"]["food"]:
+    """if new_head in state["board"]["food"]:
         snake["health"] = 100
-        state["board"]["food"].remove(new_head)
+        state["board"]["food"].remove(new_head)"""
 
     if snake["health"] == 0:
         state["board"]["snakes"].remove(snake)
@@ -134,6 +134,7 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
         state["you"] = snake
         state["turn"] += 1
 
+    # probably can be removed – reengineer to having snake_id as argument instead of snake
     for i in range(len(state["board"]["snakes"])):
         if state["board"]["snakes"][i]["id"] == snake["id"]:
             state["board"]["snakes"][i] = snake
