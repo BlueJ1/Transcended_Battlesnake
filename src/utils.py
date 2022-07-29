@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Optional
 
 import pandas as pd
 
@@ -84,3 +84,11 @@ def head_distance(snake1: dict, snake2: dict) -> int:
 def head_body_distance(snake1: dict, snake2: dict) -> int:
     return min([abs(snake1["head"]["x"] - body_part["x"]) + abs(snake1["head"]["y"] - body_part["y"])
                 for body_part in snake2["body"]])
+
+
+def get_snake(snake_id: str, snake_list: List[dict]) -> Optional[dict]:
+    for any_snake in snake_list:
+        if any_snake["id"] == snake_id:
+            return any_snake
+
+    raise ValueError(f'No snake with id = {snake_id} found in list:', snake_list)
