@@ -15,15 +15,12 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
     my_id = state["you"]["id"]
     print(f'possible moves: {possible_moves}')
     for move in possible_moves:
-        move_possible = True
+        print(f'selected move: {move}')
         for new_state in simulate_turn(move, my_id, state):
             if not dls_survival(new_state, 1, l):
-                move_possible = False
+                print("Removed " + move + " in remove_certain_deaths.")
+                possible_moves.remove(move)
                 break
-
-        if not move_possible:
-            print("Removed " + move + " in remove_certain_deaths.")
-            possible_moves.remove(move)
 
     # print("time:", time() - t)
 
