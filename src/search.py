@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-DEPTH_LIMIT = 4
+DEPTH_LIMIT = 5
 CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
 
 
@@ -34,17 +34,16 @@ def dls_survival(state: dict, d: int, l: int):
     Simple recursive depth-limited search for sequences of moves that ensure survival.
     """
 
-    if d >= l:
-        return 1  # success if we reach the depth limit
-
     my_id = state["you"]["id"]
     # TODO consider more relevant data (e.g. health)
 
     possible_moves = ["up", "down", "left", "right"]
-    # possible_moves = avoid_obstacles(my_head, board, possible_moves)
+    possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
 
     if len(possible_moves) == 0:
         return 0
+    elif d >= l:
+        return 1  # success if we reach the depth limit and still have moves left
 
     for move in possible_moves:
         move_ensures_survival = True
