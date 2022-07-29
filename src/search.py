@@ -1,6 +1,7 @@
 from typing import List
 import itertools
 from time import time
+import copy
 
 from avoid import avoid_obstacles
 from utils import deep_copy, get_snake  # , head_body_distance
@@ -102,7 +103,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     my_snake = get_snake(my_id, new_state["board"]["snakes"])
     new_state = simulate_move(my_move, my_snake, new_state)
 
-    snakes = deep_copy(new_state["board"]["snakes"])
+    snakes = copy.deepcopy(new_state["board"]["snakes"])
     snakes = snakes.remove(my_snake)
     print(type(snakes))
     considered_snakes = filter(lambda snake: head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE, snakes)
