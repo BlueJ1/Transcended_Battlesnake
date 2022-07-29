@@ -6,8 +6,8 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-DEPTH_LIMIT = 10
-CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
+DEPTH_LIMIT = 5
+CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH_LIMIT) -> List[str]:
