@@ -3,12 +3,12 @@ import itertools
 from time import time
 
 from avoid import avoid_obstacles
-from utils import deep_copy, head_body_distance, get_snake
+from utils import deep_copy, get_snake  # , head_body_distance
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 TIME_LIMIT = 0.4
 DEPTH_LIMIT = 5
-CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
+# CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time_limit: float = TIME_LIMIT) \
@@ -16,6 +16,8 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time
     my_id = state["you"]["id"]
     # print(f'possible moves: {possible_moves}')
     new_states_per_move = {move: simulate_turn(move, my_id, state) for move in possible_moves}
+
+    removed = []
 
     l = 1
     while True:
@@ -33,12 +35,24 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time
 
         for move in certain_deaths:
             possible_moves.remove(move)
+            removed.append((move, l))
 
         if time() - t > time_limit:
             print(f'reached depth: {l}')
             break
 
         l += 1
+
+    # if all moves are discarded within the considered search depth, take the next-best one, as the opponents might not
+    # play optimally
+    highest_depth = 0
+    best_alternative = ""
+    if len(possible_moves) == 0:
+        for i in range(len(removed)):
+            if removed[i][1] > highest_depth:
+                best_alternative = removed[i][0]
+                highest_depth = removed[i][1]
+        possible_moves = [best_alternative]
 
     return possible_moves
 
@@ -86,7 +100,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
 
     considered_snakes = []
     for snake in new_state["board"]["snakes"]:
-        if snake["id"] != new_state["you"]["id"] and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
+        if snake["id"] != new_state["you"]["id"]:  # and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
             considered_snakes.append(snake)
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], new_state,
