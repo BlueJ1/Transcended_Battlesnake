@@ -84,10 +84,8 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     my_snake = get_snake(my_id, new_state["board"]["snakes"])
     new_state = simulate_move(my_move, my_snake, new_state)
 
-    considered_snakes = []
-    for snake in new_state["board"]["snakes"]:
-        if snake["id"] != new_state["you"]["id"] and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
-            considered_snakes.append(snake)
+    snakes = new_state["board"]["snakes"].remove(my_snake)
+    considered_snakes = filter(lambda snake: head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE, snakes)
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], new_state,
                                                                           ["up", "down", "left", "right"])]
@@ -134,7 +132,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
 
 def alive(snakes, snake_id):
     """
-    Checks if the snake with ID == snake_id is still alive.
+    Checks if the snake with ID == snake_id is still alive/exists.
     """
 
     return any([snake_id == snake["id"] for snake in snakes])
