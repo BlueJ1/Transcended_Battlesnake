@@ -71,14 +71,14 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
         if snake["id"] != new_state["you"]["id"] and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
             considered_snakes.append(snake)
 
-    moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state,
+    moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], new_state,
                                                                           ["up", "down", "left", "right"])]
                                for snake in considered_snakes]
 
     possible_outcomes = []
 
     for moves in itertools.product(*moves_considered_snakes):
-        new_state = deep_copy(state)
+        new_state = deep_copy(new_state)
         for move, snake in moves:
             new_state = simulate_move(move, snake, new_state)
 
@@ -100,7 +100,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
             possible_outcomes.append(new_state)
 
     if len(possible_outcomes) == 0:
-        possible_outcomes = [state]
+        possible_outcomes = [new_state]
 
     return possible_outcomes
 
