@@ -42,7 +42,7 @@ def dls_survival(state: dict, d: int, l: int):
     print(len(possible_moves), end=" ")
 
     if len(possible_moves) == 0:
-        print("\nFound deadly branch")
+        print("\nFound deadly branch1")
         return 0
     elif d >= l:
         print("j", end=" ")
@@ -50,18 +50,15 @@ def dls_survival(state: dict, d: int, l: int):
 
     for move in possible_moves:
         move_ensures_survival = True
-        i = 0
         for new_state in simulate_turn(move, my_id, state):
-            i += 1
             if not dls_survival(new_state, d + 1, l):
                 move_ensures_survival = False
                 break
-        print(i)
         if move_ensures_survival:
             print("k", end=" ")
             return 1
 
-    print("Found deadly branch")
+    print("Found deadly branch2")
     return 0
 
 
