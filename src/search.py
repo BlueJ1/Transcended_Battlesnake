@@ -73,9 +73,9 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
                                for snake in considered_snakes]
 
     possible_outcomes = []
-    print(list(itertools.product(*moves_considered_snakes)))
 
     for moves in itertools.product(*moves_considered_snakes):
+        print("Hello")
         new_state = deep_copy(state)
         for move, snake in moves:
             new_state = simulate_move(move, snake, state)
@@ -97,6 +97,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
         if alive(new_state["board"]["snakes"], new_state["you"]["id"]):
             possible_outcomes.append(new_state)
 
+    print(possible_outcomes)
     if len(possible_outcomes) == 0:
         print("Only one snake in the game.")
         possible_outcomes = [state]
