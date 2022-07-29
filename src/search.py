@@ -14,7 +14,7 @@ CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time_limit: float = TIME_LIMIT) \
         -> List[str]:
     my_id = state["you"]["id"]
-    print(f'possible moves: {possible_moves}')
+    # print(f'possible moves: {possible_moves}')
     new_states_per_move = {move: simulate_turn(move, my_id, state) for move in possible_moves}
 
     l = 1
@@ -52,7 +52,6 @@ def dls_survival(state: dict, d: int, l: int, t: float, time_limit: float):
         return 1
 
     my_id = state["you"]["id"]
-    # TODO consider more relevant data (e.g. health)
 
     possible_moves = ["up", "down", "left", "right"]
     possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
@@ -137,15 +136,20 @@ def alive(snakes, snake_id):
 
 def simulate_move(move: str, snake: dict, state: dict) -> dict:
     head = snake["head"]
+
+    ate = False
+    if head in state["board"]["food"]:
+        state["board"]["food"].remove(head)
+        ate = True
+
     new_head = {"x": head["x"] + move_direction[move][0], "y": head["y"] + move_direction[move][1]}
-    snake["body"] = [new_head] + snake["body"][:-1]
+    snake["body"] = [new_head] + (snake["body"] if ate else snake["body"][:-1])
 
     snake["head"] = new_head
     snake["health"] -= 1
 
-    """if new_head in state["board"]["food"]:
+    if new_head in state["board"]["food"]:
         snake["health"] = 100
-        state["board"]["food"].remove(new_head)"""
 
     """"if snake["health"] == 0:
         state["board"]["snakes"].remove(snake)"""
