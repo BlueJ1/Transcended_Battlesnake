@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-DEPTH_LIMIT = 30
+DEPTH_LIMIT = 10
 CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
 
 
@@ -131,8 +131,8 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
         snake["health"] = 100
         state["board"]["food"].remove(new_head)"""
 
-    if snake["health"] == 0:
-        state["board"]["snakes"].remove(snake)
+    """"if snake["health"] == 0:
+        state["board"]["snakes"].remove(snake)"""
 
     if snake["id"] == state["you"]["id"]:
         state["you"] = snake
