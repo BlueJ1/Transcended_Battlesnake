@@ -195,7 +195,7 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
 
     # probably can be removed – reengineer to having snake_id as argument instead of snake
     #                         - can only be reengineered if [snakes] is transformed to dict {id: snake}
-    for i in range(state["board"]["snakes"]):
+    for i in range(len(state["board"]["snakes"])):
         if state["board"]["snakes"][i]["id"] == snake["id"]:
             state["board"]["snakes"][i] = snake
 
