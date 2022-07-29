@@ -22,6 +22,8 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
                 possible_moves.remove(move)
                 break
 
+        print(f'Move {move} found to be safe.')
+
     # print("time:", time() - t)
 
     return possible_moves
