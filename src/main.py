@@ -29,7 +29,7 @@ def handle_start():
     """
     data = request.get_json()
 
-    print(f"{data['game']['id']} START")
+    print(f'{data["game"]["id"]} START')
     return "ok"
 
 
@@ -73,6 +73,6 @@ if __name__ == "__main__":
     host = "0.0.0.0"
     port = int(os.environ.get("PORT", "8088"))
 
-    print(f"\nRunning Battlesnake server at http://{host}:{port}")
+    print(f'\nRunning Battlesnake server at http://{host}:{port}')
     app.env = 'development'
     app.run(host=host, port=port, debug=True)
