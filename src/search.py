@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, get_snake  # , head_body_distance
 
 MOVE_DIRECTION = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-TIME_LIMIT = 0.4
+TIME_LIMIT = 0.42
 DEPTH_LIMIT = 5
 # CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 
