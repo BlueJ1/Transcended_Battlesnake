@@ -104,6 +104,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
 
     snakes = deep_copy(new_state["board"]["snakes"])
     snakes = snakes.remove(my_snake)
+    print(type(snakes))
     considered_snakes = filter(lambda snake: head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE, snakes)
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], new_state,
