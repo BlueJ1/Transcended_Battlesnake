@@ -84,8 +84,8 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     my_snake = get_snake(my_id, new_state["board"]["snakes"])
     new_state = simulate_move(my_move, my_snake, new_state)
 
-    snakes = new_state["board"]["snakes"].remove(my_snake)
-    considered_snakes = filter(lambda snake: head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE, snakes)
+    snakes = deep_copy(new_state["board"]["snakes"])
+    considered_snakes = filter(lambda snake: head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE, snakes.remove(my_snake))
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], new_state,
                                                                           ["up", "down", "left", "right"])]
@@ -98,25 +98,18 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
         for move, snake in moves:
             new_state2 = simulate_move(move, snake, new_state2)
 
-        # check head collisions
-        dead_snakes = []
+        # check head collisions - snake with higher life value lives
+        dead_snakes = {}
         for snake in new_state2["board"]["snakes"]:
             for other_snake in new_state2["board"]["snakes"]:
                 if snake["id"] != other_snake["id"] and snake["head"] == other_snake["head"]:
                     if snake["health"] < other_snake["health"]:
-                        dead_snakes.append(snake)
+                        dead_snakes.add(snake)
                     elif snake["health"] > other_snake["health"]:
-                        dead_snakes.append(other_snake)
+                        dead_snakes.add(other_snake)
                     else:
-                        dead_snakes.append(snake)
-                        dead_snakes.append(other_snake)
-
-        i = 0
-        while i < len(dead_snakes):
-            if dead_snakes[i] in dead_snakes[i:]:
-                dead_snakes.pop(i)
-            else:
-                i += 1
+                        dead_snakes.add(snake)
+                        dead_snakes.add(other_snake)
 
         for dead_snake in dead_snakes:
             new_state2["board"]["snakes"].remove(dead_snake)
