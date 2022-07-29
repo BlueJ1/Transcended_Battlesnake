@@ -24,7 +24,7 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
             print("Removed " + move + " in remove_certain_deaths.")
             possible_moves.remove(move)
 
-    print("time:", time() - t)
+    # print("time:", time() - t)
 
     return possible_moves
 
@@ -97,6 +97,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
             possible_outcomes.append(new_state)
 
     if len(possible_outcomes) == 0:
+        print("Only one snake in the game.")
         possible_outcomes = [state]
 
     return possible_outcomes
