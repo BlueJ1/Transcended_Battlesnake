@@ -62,13 +62,13 @@ def dls_survival(state: dict, d: int, l: int):
 
 
 def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
+    new_state = deep_copy(state)
     my_snake = get_snake(my_id, state["board"]["snakes"])
-    state = deep_copy(state)
-    state = simulate_move(my_move, my_snake, state)
+    new_state = simulate_move(my_move, my_snake, new_state)
 
     considered_snakes = []
-    for snake in state["board"]["snakes"]:
-        if snake["id"] != state["you"]["id"] and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
+    for snake in new_state["board"]["snakes"]:
+        if snake["id"] != new_state["you"]["id"] and head_body_distance(my_snake, snake) < CONSIDERED_DISTANCE:
             considered_snakes.append(snake)
 
     moves_considered_snakes = [[(move, snake) for move in avoid_obstacles(snake["head"], state,
