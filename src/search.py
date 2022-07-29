@@ -66,7 +66,7 @@ def dls_survival(state: dict, d: int, l: int):
 def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     my_snake = get_snake(my_id, state["board"]["snakes"])
     state = deep_copy(state)
-    simulate_move(my_move, my_snake, state)
+    state = simulate_move(my_move, my_snake, state)
 
     considered_snakes = []
     for snake in state["board"]["snakes"]:
@@ -82,7 +82,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     for moves in itertools.product(*moves_considered_snakes):
         new_state = deep_copy(state)
         for move, snake in moves:
-            simulate_move(move, snake, state)
+            new_state = simulate_move(move, snake, new_state)
 
         """
         # check head collisions
@@ -115,7 +115,7 @@ def alive(snakes, snake_id):
     return any([snake_id == snake["id"] for snake in snakes])
 
 
-def simulate_move(move: str, snake: dict, state: dict):
+def simulate_move(move: str, snake: dict, state: dict) -> dict:
     head = snake["head"]
     new_head = {"x": head["x"] + move_direction[move][0], "y": head["y"] + move_direction[move][1]}
     snake["body"] = [new_head] + snake["body"][:-1]
@@ -133,3 +133,9 @@ def simulate_move(move: str, snake: dict, state: dict):
     if snake["id"] == state["you"]["id"]:
         state["you"] = snake
         state["turn"] += 1
+
+    for i in range(len(state["board"]["snakes"])):
+        if state["board"]["snakes"][i]["id"] == snake["id"]:
+            state["board"]["snakes"][i] = snake
+
+    return state
