@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-DEPTH_LIMIT = 22
+DEPTH_LIMIT = 23
 CONSIDERED_DISTANCE = int(1.5 * DEPTH_LIMIT)
 
 
@@ -14,16 +14,20 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH
     # t = time()
     my_id = state["you"]["id"]
     print(f'possible moves: {possible_moves}')
+    certain_deaths = []
     for move in possible_moves:
         print(f'selected move: {move}')
+        move_safe = True
         for new_state in simulate_turn(move, my_id, state):
             if not dls_survival(new_state, 1, l):
-                print("Removed " + move + " in remove_certain_deaths.")
-                possible_moves.remove(move)
+                certain_deaths.append(move)
+                move_safe = False
                 break
 
-        print(f'Move {move} found to be safe.')
+        print(f'Move {move} found to be {"safe" if move_safe else "deadly"}.')
 
+    for move in certain_deaths:
+        possible_moves.remove(move)
     # print("time:", time() - t)
 
     return possible_moves
