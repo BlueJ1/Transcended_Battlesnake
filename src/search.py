@@ -5,7 +5,7 @@ from time import time
 from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
-move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
+MOVE_DIRECTION = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
 TIME_LIMIT = 0.4
 DEPTH_LIMIT = 5
 CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
@@ -141,14 +141,25 @@ def alive(snakes, snake_id):
 
 
 def simulate_move(move: str, snake: dict, state: dict) -> dict:
+    """
+    state: current state of the game
+    move: one out of [ up, down, left, right ]
+    snake: the players snake
+
+    return: the state of the game after the move
+    TODO: misses a check for 0 health
+    """
     head = snake["head"]
 
+    # food consumption
     ate = False
     if head in state["board"]["food"]:
         state["board"]["food"].remove(head)
         ate = True
 
-    new_head = {"x": head["x"] + move_direction[move][0], "y": head["y"] + move_direction[move][1]}
+    # set new head position
+    new_head = {"x": head["x"] + MOVE_DIRECTION[move][0],
+                "y": head["y"] + MOVE_DIRECTION[move][1]}
     snake["body"] = [new_head] + (snake["body"] if ate else snake["body"][:-1])
 
     snake["head"] = new_head
@@ -165,8 +176,9 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
         state["turn"] += 1
 
     # probably can be removed – reengineer to having snake_id as argument instead of snake
-    for i in range(len(state["board"]["snakes"])):
-        if state["board"]["snakes"][i]["id"] == snake["id"]:
-            state["board"]["snakes"][i] = snake
+    #                         - can only be reengineered if [snakes] is transformed to dict {id: snake}
+    for s in state["board"]["snakes"]:
+        if s["id"] == snake["id"]:
+            s = snake
 
     return state
