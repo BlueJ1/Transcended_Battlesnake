@@ -63,7 +63,7 @@ def dls_survival(state: dict, d: int, l: int):
 
 def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
     new_state = deep_copy(state)
-    my_snake = get_snake(my_id, state["board"]["snakes"])
+    my_snake = get_snake(my_id, new_state["board"]["snakes"])
     new_state = simulate_move(my_move, my_snake, new_state)
 
     considered_snakes = []
