@@ -13,6 +13,10 @@ DEPTH_LIMIT = 5
 
 def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time_limit: float = TIME_LIMIT) \
         -> List[str]:
+
+    if len(possible_moves) <= 1:
+        return possible_moves
+
     my_id = state["you"]["id"]
     # print(f'possible moves: {possible_moves}')
     new_states_per_move = {move: simulate_turn(move, my_id, state) for move in possible_moves}
@@ -191,8 +195,8 @@ def simulate_move(move: str, snake: dict, state: dict) -> dict:
 
     # probably can be removed – reengineer to having snake_id as argument instead of snake
     #                         - can only be reengineered if [snakes] is transformed to dict {id: snake}
-    for s in state["board"]["snakes"]:
-        if s["id"] == snake["id"]:
-            s = snake
+    for i in range(state["board"]["snakes"]):
+        if state["board"]["snakes"][i]["id"] == snake["id"]:
+            state["board"]["snakes"][i] = snake
 
     return state
