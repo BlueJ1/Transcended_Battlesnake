@@ -41,6 +41,7 @@ def dls_survival(state: dict, d: int, l: int):
     possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
 
     if len(possible_moves) == 0:
+        print("Found deadly branch")
         return 0
     elif d >= l:
         return 1  # success if we reach the depth limit and still have moves left
@@ -54,6 +55,7 @@ def dls_survival(state: dict, d: int, l: int):
         if move_ensures_survival:
             return 1
 
+    print("Found deadly branch")
     return 0
 
 
@@ -110,7 +112,6 @@ def alive(snakes, snake_id):
 
 
 def simulate_move(move: str, snake: dict, state: dict):
-    print(snake)
     head = snake["head"]
     new_head = {"x": head["x"] + move_direction[move][0], "y": head["y"] + move_direction[move][1]}
     snake["body"] = [new_head] + snake["body"][:-1]
@@ -128,5 +129,3 @@ def simulate_move(move: str, snake: dict, state: dict):
     if snake["id"] == state["you"]["id"]:
         state["you"] = snake
         state["turn"] += 1
-
-    print(snake)
