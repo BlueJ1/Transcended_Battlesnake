@@ -3,6 +3,7 @@ from typing import List
 from utils import find_closest
 from avoid import avoid_obstacles
 from search import remove_certain_deaths
+from time import time
 
 """
 This file can be a nice home for your Battlesnake's logic and helper functions.
@@ -43,15 +44,14 @@ def choose_move(state: dict) -> str:
 
     """
 
+    t = time()
+
     my_snake = state["you"]      # A dictionary describing your snake's position on the board
     my_head = my_snake["head"]  # A dictionary of coordinates like {"x": 0, "y": 0}
     # A list of coordinate dictionaries like [{"x": 0, "y": 0}, {"x": 1, "y": 0}, {"x": 2, "y": 0}]
-    my_body = my_snake["body"]
 
     board = state['board']
     board_height, board_width = board['height'], board['width']
-    other_snakes = board["snakes"]
-    hazards = board["hazards"]
 
     # Uncomment the lines below to see what this data looks like in your output!
     # print(f"~~~ Turn: {data['turn']}  Game Mode: {data['game']['ruleset']['name']} ~~~")
@@ -64,7 +64,7 @@ def choose_move(state: dict) -> str:
     # Step 0 to 3 – eliminate impossible moves
     # TODO: merge the next two lines
     possible_moves = avoid_obstacles(my_head, state, possible_moves)
-    possible_moves = remove_certain_deaths(state, possible_moves)
+    possible_moves = remove_certain_deaths(state, possible_moves, t)
 
     if len(possible_moves) == 0:
         move = "up"  # the move returned here is irrelevant, as none is correct
@@ -87,6 +87,7 @@ def choose_move(state: dict) -> str:
         # TODO: Explore new strategies for picking a move that are better than random
 
     print(f"{state['game']['id']} MOVE {state['turn']}: {move} picked from all valid options in {possible_moves}")
+    print("time:", time() - t)
 
     return move
 

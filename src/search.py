@@ -1,42 +1,54 @@
 from typing import List
 import itertools
-# from time import time
+from time import time
 
 from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
+TIME_LIMIT = 0.43
 DEPTH_LIMIT = 5
 CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 
 
-def remove_certain_deaths(state: dict, possible_moves: List[str], l: int = DEPTH_LIMIT) -> List[str]:
-    # t = time()
+def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time_limit: float = TIME_LIMIT) \
+        -> List[str]:
     my_id = state["you"]["id"]
     print(f'possible moves: {possible_moves}')
-    certain_deaths = []
-    for move in possible_moves:
-        print(f'selected move: {move}')
-        move_safe = True
-        for new_state in simulate_turn(move, my_id, state):
-            if not dls_survival(new_state, 1, l):
-                certain_deaths.append(move)
-                move_safe = False
-                break
+    new_states_per_move = {move: simulate_turn(move, my_id, state) for move in possible_moves}
 
-        print(f'Move {move} found to be {"safe" if move_safe else "deadly"}.')
+    l = 1
+    while True:
+        certain_deaths = []
+        for move in possible_moves:
+            # print(f' selected move: {move}')
+            # move_safe = True
+            for new_state in new_states_per_move[move]:
+                if not dls_survival(new_state, 1, l, t, time_limit):
+                    certain_deaths.append(move)
+                    # move_safe = False
+                    break
 
-    for move in certain_deaths:
-        possible_moves.remove(move)
-    # print("time:", time() - t)
+            # print(f'Move {move} found to be {"safe" if move_safe else "deadly"}.')
+
+        for move in certain_deaths:
+            possible_moves.remove(move)
+
+        if time() - t > time_limit:
+            break
+
+        l += 1
 
     return possible_moves
 
 
-def dls_survival(state: dict, d: int, l: int):
+def dls_survival(state: dict, d: int, l: int, t: float, time_limit: float):
     """
     Simple recursive depth-limited search for sequences of moves that ensure survival.
     """
+
+    if time() - t > time_limit:
+        return 1
 
     my_id = state["you"]["id"]
     # TODO consider more relevant data (e.g. health)
@@ -55,7 +67,7 @@ def dls_survival(state: dict, d: int, l: int):
         move_ensures_survival = True
         # print(f'd={d}, move={move}')
         for new_state in simulate_turn(move, my_id, state):
-            if not dls_survival(new_state, d + 1, l):
+            if not dls_survival(new_state, d + 1, l, t, time_limit):
                 # print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
                 move_ensures_survival = False
                 break
