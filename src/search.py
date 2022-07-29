@@ -6,7 +6,7 @@ from avoid import avoid_obstacles
 from utils import deep_copy, head_body_distance, get_snake
 
 move_direction = {"up": (0, 1), "down": (0, -1), "right": (1, 0), "left": (-1, 0)}
-TIME_LIMIT = 0.43
+TIME_LIMIT = 0.4
 DEPTH_LIMIT = 5
 CONSIDERED_DISTANCE = int(1. * DEPTH_LIMIT)
 
@@ -35,6 +35,7 @@ def remove_certain_deaths(state: dict, possible_moves: List[str], t: float, time
             possible_moves.remove(move)
 
         if time() - t > time_limit:
+            print(f'reached depth: {l}')
             break
 
         l += 1
