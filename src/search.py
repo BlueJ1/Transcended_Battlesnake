@@ -45,6 +45,7 @@ def dls_survival(state: dict, d: int, l: int):
         print("\nFound deadly branch")
         return 0
     elif d >= l:
+        print("j", end=" ")
         return 1  # success if we reach the depth limit and still have moves left
 
     for move in possible_moves:
