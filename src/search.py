@@ -100,7 +100,7 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
         for move, snake in moves:
             new_state2 = simulate_move(move, snake, new_state2)
 
-        """"# check head collisions
+        # check head collisions
         dead_snakes = []
         for snake in new_state2["board"]["snakes"]:
             for other_snake in new_state2["board"]["snakes"]:
@@ -113,9 +113,15 @@ def simulate_turn(my_move: str, my_id: str, state: dict) -> List[dict]:
                         dead_snakes.append(snake)
                         dead_snakes.append(other_snake)
 
-        dead_snakes = list(dict.fromkeys(dead_snakes))
+        i = 0
+        while i < len(dead_snakes):
+            if dead_snakes[i] in dead_snakes[i:]:
+                dead_snakes.pop(i)
+            else:
+                i += 1
+
         for dead_snake in dead_snakes:
-            new_state2["board"]["snakes"].remove(dead_snake)"""
+            new_state2["board"]["snakes"].remove(dead_snake)
 
         if alive(new_state2["board"]["snakes"], new_state2["you"]["id"]):
             possible_outcomes.append(new_state2)
