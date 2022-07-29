@@ -39,23 +39,23 @@ def dls_survival(state: dict, d: int, l: int):
 
     possible_moves = ["up", "down", "left", "right"]
     possible_moves = avoid_obstacles(state["you"]["head"], state, possible_moves)
-    print(len(possible_moves), end=" ")
 
     if len(possible_moves) == 0:
-        print("\nFound deadly branch1")
+        print("Found deadly branch1")
         return 0
     elif d >= l:
-        print("j", end=" ")
         return 1  # success if we reach the depth limit and still have moves left
 
     for move in possible_moves:
         move_ensures_survival = True
+        print(f'd={d}, move={move}')
         for new_state in simulate_turn(move, my_id, state):
             if not dls_survival(new_state, d + 1, l):
+                print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
                 move_ensures_survival = False
                 break
         if move_ensures_survival:
-            print("k", end=" ")
+            print(f'd={d}, move={move}, move_ensures_survival={move_ensures_survival}')
             return 1
 
     print("Found deadly branch2")
